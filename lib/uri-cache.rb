@@ -7,10 +7,11 @@
 
 require 'open-uri'
 require 'fileutils'
-require 'cgi'
+require 'digest'
 
 class URICache
 
+  SCHEME="sha256"
 
   def initialize(location)
     @location = location
@@ -18,7 +19,7 @@ class URICache
   end
 
   def uri_location(uri)
-    c_uri = CGI.escape uri
+    c_uri = Digest::SHA256.base64digest(uri+SCHEME)
     "#{@location}/#{c_uri}"
   end
 
