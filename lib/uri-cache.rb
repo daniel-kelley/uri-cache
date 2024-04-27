@@ -7,6 +7,7 @@
 
 require 'open-uri'
 require 'fileutils'
+require 'base64'
 require 'digest'
 
 class URICache
@@ -19,7 +20,8 @@ class URICache
   end
 
   def uri_location(uri)
-    c_uri = Digest::SHA256.base64digest(uri+SCHEME)
+    digest = Digest::SHA256.digest(uri+SCHEME)
+    c_uri = Base64.urlsafe_encode64(digest)
     "#{@location}/#{c_uri}"
   end
 
